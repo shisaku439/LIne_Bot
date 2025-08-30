@@ -42,8 +42,9 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     time = datetime.datetime.now(pytz.timezone("Asia/Tokyo"))
+    text = f"東京の時刻は、「{time}」です"
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=time))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
 
 
 if __name__ == "__main__":
