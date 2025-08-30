@@ -4,7 +4,7 @@ import os
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, StickerSendMessage
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -52,13 +52,13 @@ def handle_message(event):
 
     reply_conetnts = f"ただいまの東京の時刻は、「{dt.hour}時 {dt.minute}分」です"
 
-    image_message = ImageSendMessage(
+    sticker_message = StickerSendMessage(
         package_id="446", sticker_id="1988"  # スタンプパッケージID  # スタンプID
     )
 
     line_bot_api.reply_message(
         event.reply_token,
-        [TextSendMessage(text=reply_greeting), TextSendMessage(text=reply_conetnts), image_message],
+        [TextSendMessage(text=reply_greeting), TextSendMessage(text=reply_conetnts), sticker_message],
     )
 
 
