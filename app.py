@@ -1,4 +1,5 @@
 import datetime
+import time
 import pytz
 import os
 from flask import Flask, request, abort
@@ -41,10 +42,20 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    time = datetime.datetime.now(pytz.timezone("Asia/Tokyo"))
-    text = f"東京の時刻は、「{time}」です"
+    dt = datetime.datetime.now(pytz.timezone("Asia/Tokyo"))
+    reply_greeting = ""
+    if 10 > dt.hour >= 2:
+        reply_greeting = "おはよう！"
+    elif 18 > dt.hour >= 10:
+        reply_greeting = "こんにちは！"
+    elif (24 > dt.hour >= 18) and (2 > dt.hour >= 0):
+        reply_greeting = "こんばんは！"
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
+    reply_conetnts = f"ただいまの東京の時刻は、「{dt.hour}時 {dt.minute}分」です"
+
+    line_bot_api.reply_message(
+        event.reply_token, [TextSendMessage(text=reply_greeting), TextSendMessage(text=reply_conetnts)]
+    )
 
 
 if __name__ == "__main__":
